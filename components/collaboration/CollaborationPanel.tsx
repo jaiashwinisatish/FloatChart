@@ -105,8 +105,6 @@ export function CollaborationPanel({ sessionId }: CollaborationPanelProps) {
         query: 'Analyze correlations between chlorophyll and nutrient levels',
         author: 'Alex Rodriguez',
         createdAt: new Date('2023-11-13T14:20:00Z'),
-        views: 31,
-        bookmarked: true
       }
     ]);
   }, [sessionId]);
@@ -114,7 +112,7 @@ export function CollaborationPanel({ sessionId }: CollaborationPanelProps) {
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'online': return 'bg-green-500';
-      case 'away': return 'bg-yellow-500';
+      case 'away': return 'bg-white border border-gray-300';
       case 'offline': return 'bg-gray-400';
       default: return 'bg-gray-400';
     }
@@ -151,13 +149,13 @@ export function CollaborationPanel({ sessionId }: CollaborationPanelProps) {
   };
 
   return (
-    <div className="h-full bg-slate-900 flex flex-col">
+    <div className="h-full bg-background flex flex-col">
       {/* Header */}
-      <div className="border-b bg-slate-800 border-slate-700 p-4">
+      <div className="border-b bg-card border-border p-4">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
-            <Users className="w-5 h-5 text-slate-300" />
-            <h3 className="font-semibold text-white">Collaboration</h3>
+            <Users className="w-5 h-5 text-muted-foreground" />
+            <h3 className="font-semibold text-foreground">Collaboration</h3>
           </div>
           <Button variant="outline" size="sm">
             <Settings className="w-4 h-4 mr-2" />
@@ -191,8 +189,8 @@ export function CollaborationPanel({ sessionId }: CollaborationPanelProps) {
         {activeTab === 'team' && (
           <div className="space-y-4">
             {/* Invite Section */}
-            <Card className="p-4 bg-slate-800 border-slate-600">
-              <h4 className="font-medium text-blue-300 mb-3">Invite Collaborator</h4>
+            <Card className="p-4 bg-card border-border">
+              <h4 className="font-medium text-foreground mb-3">Invite Collaborator</h4>
               <div className="flex gap-2">
                 <Input
                   placeholder="Enter email address..."
@@ -200,7 +198,7 @@ export function CollaborationPanel({ sessionId }: CollaborationPanelProps) {
                   onChange={(e) => setInviteEmail(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && inviteCollaborator()}
                   className="flex-1"
-                  className="flex-1 bg-slate-700 border-slate-600 text-white placeholder:text-slate-400"
+                  className="flex-1 bg-muted border-border text-foreground placeholder:text-muted-foreground"
                 />
                 <Button onClick={inviteCollaborator} size="sm">
                   <UserPlus className="w-4 h-4 mr-2" />
@@ -212,7 +210,7 @@ export function CollaborationPanel({ sessionId }: CollaborationPanelProps) {
             {/* Team Members */}
             <div className="space-y-2">
               {collaborators.map(collaborator => (
-                <Card key={collaborator.id} className="p-3 bg-slate-800 border-slate-700">
+                <Card key={collaborator.id} className="p-3 bg-card border-border">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
                       <div className="relative">
@@ -225,15 +223,15 @@ export function CollaborationPanel({ sessionId }: CollaborationPanelProps) {
                         <div className={`absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full border-2 border-white ${getStatusColor(collaborator.status)}`} />
                       </div>
                       <div>
-                        <div className="font-medium text-sm text-white">{collaborator.name}</div>
-                        <div className="text-xs text-slate-400">{collaborator.email}</div>
+                        <div className="font-medium text-sm text-foreground">{collaborator.name}</div>
+                        <div className="text-xs text-muted-foreground">{collaborator.email}</div>
                       </div>
                     </div>
                     <div className="text-right">
                       <Badge className={`text-xs ${getRoleColor(collaborator.role)}`}>
                         {collaborator.role}
                       </Badge>
-                      <div className="text-xs text-slate-400 mt-1">
+                      <div className="text-xs text-muted-foreground mt-1">
                         {collaborator.status === 'online' ? 'Active now' : formatTimeAgo(collaborator.lastSeen)}
                       </div>
                     </div>
@@ -243,8 +241,8 @@ export function CollaborationPanel({ sessionId }: CollaborationPanelProps) {
             </div>
 
             {/* Session Sharing */}
-            <Card className="p-4 bg-slate-800 border-slate-600">
-              <h4 className="font-medium text-green-300 mb-3">Share This Session</h4>
+            <Card className="p-4 bg-card border-border">
+              <h4 className="font-medium text-foreground mb-3">Share This Session</h4>
               <div className="flex gap-2 mb-2">
                 <Button variant="outline" size="sm" className="flex-1">
                   <Link className="w-4 h-4 mr-2" />
@@ -255,7 +253,7 @@ export function CollaborationPanel({ sessionId }: CollaborationPanelProps) {
                   Share
                 </Button>
               </div>
-              <div className="text-xs text-green-300">
+              <div className="text-xs text-muted-foreground">
                 Anyone with the link can view this session
               </div>
             </Card>
@@ -265,12 +263,12 @@ export function CollaborationPanel({ sessionId }: CollaborationPanelProps) {
         {activeTab === 'queries' && (
           <div className="space-y-3">
             {sharedQueries.map(query => (
-              <Card key={query.id} className="p-4 bg-slate-800 border-slate-700">
+              <Card key={query.id} className="p-4 bg-card border-border">
                 <div className="flex items-start justify-between mb-2">
                   <div className="flex-1">
-                    <h4 className="font-medium text-sm mb-1 text-white">{query.title}</h4>
-                    <p className="text-xs text-slate-400 italic mb-2">"{query.query}"</p>
-                    <div className="flex items-center gap-4 text-xs text-slate-400">
+                    <h4 className="font-medium text-sm mb-1 text-foreground">{query.title}</h4>
+                    <p className="text-xs text-muted-foreground italic mb-2">"{query.query}"</p>
+                    <div className="flex items-center gap-4 text-xs text-muted-foreground">
                       <span>by {query.author}</span>
                       <div className="flex items-center gap-1">
                         <Clock className="w-3 h-3" />
@@ -284,7 +282,7 @@ export function CollaborationPanel({ sessionId }: CollaborationPanelProps) {
                   </div>
                   <div className="flex items-center gap-1">
                     <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
-                      <BookOpen className={`w-3 h-3 ${query.bookmarked ? 'text-yellow-500' : 'text-gray-400'}`} />
+                      <BookOpen className={`w-3 h-3 ${query.bookmarked ? 'text-white' : 'text-gray-400'}`} />
                     </Button>
                     <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
                       <Share className="w-3 h-3" />
@@ -306,7 +304,7 @@ export function CollaborationPanel({ sessionId }: CollaborationPanelProps) {
       </ScrollArea>
 
       {/* Footer */}
-      <div className="border-t bg-slate-800 border-slate-700 p-4">
+      <div className="border-t bg-card border-border p-4">
         <Button variant="outline" size="sm" className="w-full">
           <Download className="w-4 h-4 mr-2" />
           Export Collaboration Report

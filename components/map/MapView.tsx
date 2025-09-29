@@ -102,13 +102,13 @@ export function MapView({ onLocationQuery, visualizationData }: MapViewProps) {
         )}
 
         {/* Map labels */}
-        <div className="absolute top-4 left-4 text-white text-xs font-mono opacity-75">
+        <div className="absolute top-4 left-4 text-foreground text-xs font-mono opacity-75">
           Arabian Sea
         </div>
-        <div className="absolute top-1/2 right-8 text-white text-xs font-mono opacity-75">
+        <div className="absolute top-1/2 right-8 text-foreground text-xs font-mono opacity-75">
           Indian Ocean
         </div>
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white text-xs font-mono opacity-75">
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-foreground text-xs font-mono opacity-75">
           Equator
         </div>
       </div>
@@ -126,14 +126,14 @@ export function MapView({ onLocationQuery, visualizationData }: MapViewProps) {
   );
 
   return (
-    <div className="h-full flex flex-col bg-slate-900">
+    <div className="h-full flex flex-col bg-white">
       {/* Map Controls */}
-      <div className="border-b bg-slate-800 border-slate-700 p-4">
+      <div className="border-b bg-white border-gray-200 p-4">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2">
-              <Layers className="w-4 h-4 text-slate-300" />
-              <span className="text-sm font-medium text-white">Map Style:</span>
+              <Layers className="w-4 h-4 text-gray-600" />
+              <span className="text-sm font-medium text-black">Map Style:</span>
               <div className="flex gap-1">
                 {(['osm', 'satellite', 'ocean'] as const).map((style) => (
                   <Button
@@ -157,7 +157,7 @@ export function MapView({ onLocationQuery, visualizationData }: MapViewProps) {
                 onChange={(e) => setShowFloats(e.target.checked)}
                 className="rounded"
               />
-              <label htmlFor="show-floats" className="text-sm text-white">Show ARGO Floats</label>
+              <label htmlFor="show-floats" className="text-sm text-foreground">Show ARGO Floats</label>
             </div>
           </div>
 
@@ -178,10 +178,10 @@ export function MapView({ onLocationQuery, visualizationData }: MapViewProps) {
 
         {/* Location Query Interface */}
         {selectedLocation && (
-          <Card className="p-3 bg-slate-700 border-slate-600">
+          <Card className="p-3 bg-white border-gray-200">
             <div className="flex items-center gap-3">
               <MapPin className="w-4 h-4 text-blue-400" />
-              <div className="text-sm font-medium text-blue-300">
+              <div className="text-sm font-medium text-foreground">
                 Location Selected: {selectedLocation[0].toFixed(2)}°, {selectedLocation[1].toFixed(2)}°
               </div>
             </div>
@@ -190,14 +190,13 @@ export function MapView({ onLocationQuery, visualizationData }: MapViewProps) {
                 placeholder="Ask about this location... e.g., 'show salinity here in March 2023'"
                 value={queryText}
                 onChange={(e) => setQueryText(e.target.value)}
-                className="flex-1"
-                className="flex-1 bg-slate-600 border-slate-500 text-white placeholder:text-slate-400"
+                className="flex-1 bg-white border-gray-300 text-black placeholder:text-gray-500"
                 onKeyDown={(e) => e.key === 'Enter' && handleLocationQuery()}
               />
               <Button 
                 onClick={handleLocationQuery}
                 disabled={!queryText.trim()}
-                size="sm"
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
               >
                 <Search className="w-4 h-4" />
               </Button>
@@ -211,9 +210,9 @@ export function MapView({ onLocationQuery, visualizationData }: MapViewProps) {
         <MapImplementation />
 
         {/* Float Status Legend */}
-        <div className="absolute bottom-4 left-4 bg-slate-800/90 backdrop-blur-sm rounded-lg p-3 shadow-lg border border-slate-700">
-          <div className="text-sm font-medium mb-2 text-white">ARGO Floats</div>
-          <div className="space-y-1 text-xs text-slate-300">
+        <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm rounded-lg p-3 shadow-lg border border-gray-200">
+          <div className="text-sm font-medium mb-2 text-black">ARGO Floats</div>
+          <div className="space-y-1 text-xs text-gray-600">
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 bg-green-400 rounded-full"></div>
               <span>Active ({sampleFloats.filter(f => f.status === 'active').length})</span>
@@ -226,15 +225,15 @@ export function MapView({ onLocationQuery, visualizationData }: MapViewProps) {
         </div>
 
         {/* Scale Bar */}
-        <div className="absolute bottom-4 right-4 bg-slate-800/90 backdrop-blur-sm rounded-lg p-2 shadow-lg border border-slate-700">
-          <div className="text-xs font-mono text-white">Scale: ~500km</div>
+        <div className="absolute bottom-4 right-4 bg-white/90 backdrop-blur-sm rounded-lg p-2 shadow-lg border border-gray-200">
+          <div className="text-xs font-mono text-black">Scale: ~500km</div>
         </div>
 
         {/* Click instruction */}
         {!selectedLocation && (
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <Card className="p-4 bg-slate-800/90 backdrop-blur-sm shadow-lg border-slate-700">
-              <div className="flex items-center gap-2 text-slate-300">
+            <Card className="p-4 bg-white/90 backdrop-blur-sm shadow-lg border-gray-200">
+              <div className="flex items-center gap-2 text-gray-600">
                 <Crosshair className="w-5 h-5" />
                 <span>Click on the map to select a location and ask questions</span>
               </div>

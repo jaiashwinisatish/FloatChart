@@ -2,12 +2,12 @@ import './globals.css';
 import type { Metadata } from 'next';
 import { Inter, JetBrains_Mono } from 'next/font/google';
 import { Toaster } from '@/components/ui/toaster';
+import { ThemeProvider } from '@/components/theme/ThemeProvider';
 
 const inter = Inter({ 
   subsets: ['latin'],
   variable: '--font-inter'
 });
-
 const jetbrainsMono = JetBrains_Mono({ 
   subsets: ['latin'],
   variable: '--font-mono'
@@ -26,12 +26,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="h-full">
-      <body className={`${inter.variable} ${jetbrainsMono.variable} font-sans h-full antialiased bg-slate-900`}>
-        <div className="min-h-full bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
-          {children}
-        </div>
-        <Toaster />
+    <html lang="en" className="h-full light" suppressHydrationWarning>
+      <body className={`${inter.variable} ${jetbrainsMono.variable} font-sans h-full antialiased bg-white text-black`}>
+        <ThemeProvider
+          defaultTheme="light"
+          storageKey="floatchat-ui-theme"
+        >
+          <div className="min-h-full bg-white">
+            {children}
+          </div>
+          <Toaster />
+        </ThemeProvider>
       </body>
     </html>
   );

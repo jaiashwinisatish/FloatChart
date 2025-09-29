@@ -116,7 +116,7 @@ What would you like to discover today?`,
   };
 
   return (
-    <div className="h-screen flex flex-col bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+    <div className="h-screen flex flex-col bg-white">
       <SystemHeader 
         onToggleExplainableAI={() => setShowExplainableAI(!showExplainableAI)}
         onToggleVoice={() => setIsVoiceMode(!isVoiceMode)}
@@ -129,25 +129,25 @@ What would you like to discover today?`,
           {/* Main Content Area */}
           <ResizablePanel defaultSize={showExplainableAI ? 70 : 100} minSize={50}>
             <Tabs value={activeTab} onValueChange={setActiveTab} className="h-full flex flex-col">
-              <div className="border-b bg-slate-800/90 backdrop-blur-sm px-4 py-2 border-slate-700">
-                <TabsList className="grid grid-cols-5 w-full max-w-md">
-                  <TabsTrigger value="chat" className="flex items-center gap-2">
+              <div className="border-b bg-white px-4 py-2 border-gray-200">
+                <TabsList className="grid grid-cols-5 w-full max-w-md bg-white">
+                  <TabsTrigger value="chat" className="nav-item flex items-center gap-2">
                     <MessageSquare className="w-4 h-4" />
                     Chat
                   </TabsTrigger>
-                  <TabsTrigger value="map" className="flex items-center gap-2">
+                  <TabsTrigger value="map" className="nav-item flex items-center gap-2">
                     <Map className="w-4 h-4" />
                     Map
                   </TabsTrigger>
-                  <TabsTrigger value="viz" className="flex items-center gap-2">
+                  <TabsTrigger value="viz" className="nav-item flex items-center gap-2">
                     <BarChart3 className="w-4 h-4" />
                     Plots
                   </TabsTrigger>
-                  <TabsTrigger value="alerts" className="flex items-center gap-2">
+                  <TabsTrigger value="alerts" className="nav-item flex items-center gap-2">
                     <Bell className="w-4 h-4" />
                     Alerts
                   </TabsTrigger>
-                  <TabsTrigger value="collab" className="flex items-center gap-2">
+                  <TabsTrigger value="collab" className="nav-item flex items-center gap-2">
                     <Users className="w-4 h-4" />
                     Team
                   </TabsTrigger>

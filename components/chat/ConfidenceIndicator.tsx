@@ -19,7 +19,7 @@ export function ConfidenceIndicator({ score, showDetails = true }: ConfidenceInd
   const getConfidenceColor = (level: string) => {
     switch (level) {
       case 'high': return 'text-emerald-600';
-      case 'medium': return 'text-amber-600';
+      case 'medium': return 'text-foreground';
       case 'low': return 'text-red-600';
       default: return 'text-gray-600';
     }

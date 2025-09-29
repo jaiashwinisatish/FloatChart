@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Brain, Mic, MicOff, Settings, CircleHelp as HelpCircle, Activity, Waves, Download, Share } from 'lucide-react';
+import { ThemeToggle } from '@/components/theme/ThemeToggle';
+import { useTheme } from '@/components/theme/ThemeProvider';
 import { systemAPI } from '@/lib/api';
 import { SystemHealth } from '@/types';
 
@@ -20,6 +22,7 @@ export function SystemHeader({
   showExplainableAI, 
   isVoiceMode 
 }: SystemHeaderProps) {
+  const { actualTheme } = useTheme();
   const [systemHealth, setSystemHealth] = useState<SystemHealth | null>(null);
   const [currentTime, setCurrentTime] = useState(new Date());
 
@@ -46,24 +49,24 @@ export function SystemHeader({
   const getHealthStatusColor = (status: string) => {
     switch (status) {
       case 'healthy': return 'bg-emerald-500';
-      case 'degraded': return 'bg-amber-500';
+      case 'degraded': return 'bg-white border border-gray-300';
       case 'down': return 'bg-red-500';
       default: return 'bg-gray-500';
     }
   };
 
   return (
-    <header className="bg-slate-800/95 backdrop-blur-md border-b border-slate-700 px-6 py-3 shadow-lg">
+    <header className="bg-white border-b border-gray-200 px-6 py-3 shadow-sm">
       <div className="flex items-center justify-between">
         {/* Logo and Title */}
         <div className="flex items-center space-x-4">
           <div className="flex items-center space-x-2">
-            <div className="p-2 rounded-lg ocean-gradient">
+            <div className="p-2 rounded-lg ocean-gradient shadow-md">
               <Waves className="w-6 h-6 text-white wave-animation" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-white">FloatChat</h1>
-              <p className="text-xs text-slate-300">AI Ocean Data Discovery</p>
+              <h1 className="text-xl font-bold text-black">FloatChat</h1>
+              <p className="text-xs text-gray-600">AI Ocean Data Discovery • {actualTheme} mode • Theme Working!</p>
             </div>
           </div>
           
@@ -71,7 +74,7 @@ export function SystemHeader({
           {systemHealth && (
             <div className="flex items-center space-x-2">
               <div className={`w-2 h-2 rounded-full ${getHealthStatusColor(systemHealth.status)}`} />
-              <span className="text-sm text-slate-300">
+              <span className="text-sm text-gray-700">
                 {systemHealth.metrics.active_users} users active
               </span>
             </div>
@@ -79,7 +82,7 @@ export function SystemHeader({
         </div>
 
         {/* Current Time and Data Status */}
-        <div className="hidden md:flex items-center space-x-4 text-sm text-slate-300">
+        <div className="hidden md:flex items-center space-x-4 text-sm text-gray-700">
           <div className="flex items-center space-x-2">
             <Activity className="w-4 h-4" />
             <span>UTC {currentTime.toISOString().slice(0, 19).replace('T', ' ')}</span>
@@ -135,6 +138,9 @@ export function SystemHeader({
             Share
           </Button>
 
+          {/* Theme Toggle */}
+          <ThemeToggle />
+
           {/* Settings */}
           <Button variant="outline" size="sm">
             <Settings className="w-4 h-4" />
@@ -149,7 +155,7 @@ export function SystemHeader({
 
       {/* Quick Stats Bar */}
       {systemHealth && (
-        <div className="mt-2 flex items-center justify-between text-xs text-slate-400">
+        <div className="mt-2 flex items-center justify-between text-xs text-muted-foreground">
           <div className="flex items-center space-x-6">
             <span>Queries/hour: {systemHealth.metrics.queries_per_hour}</span>
             <span>Avg response: {systemHealth.metrics.avg_response_time}ms</span>
@@ -157,7 +163,7 @@ export function SystemHeader({
             <span>Vector DB: {systemHealth.services.vector_db ? '✓' : '✗'}</span>
             <span>LLM Service: {systemHealth.services.llm_service ? '✓' : '✗'}</span>
           </div>
-          <div className="text-slate-500">
+          <div className="text-muted-foreground/70">
             Ocean insights powered by ARGO float data
           </div>
         </div>

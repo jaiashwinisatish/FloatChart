@@ -141,8 +141,8 @@ export function VoiceInput({ onTranscriptReady, isActive = true }: VoiceInputPro
   // Check if Web Speech API is supported
   if (typeof window !== 'undefined' && !('webkitSpeechRecognition' in window)) {
     return (
-      <Card className="p-4 bg-slate-800 border-slate-600">
-        <div className="text-center text-sm text-amber-300">
+      <Card className="p-4 bg-card border-border">
+        <div className="text-center text-sm text-foreground">
           Voice input is not supported in this browser. Please try Chrome or Edge.
         </div>
       </Card>
@@ -150,7 +150,7 @@ export function VoiceInput({ onTranscriptReady, isActive = true }: VoiceInputPro
   }
 
   return (
-    <Card className="p-4 bg-gradient-to-r from-slate-800 to-slate-700 border-slate-600">
+    <Card className="p-4 bg-gradient-to-r from-card to-muted border-border">
       <div className="flex items-center gap-4">
         <Button
           onClick={isListening ? stopListening : startListening}
@@ -165,13 +165,12 @@ export function VoiceInput({ onTranscriptReady, isActive = true }: VoiceInputPro
           ) : (
             <Mic className="w-4 h-4 mr-2" />
           )}
-          {isProcessing ? 'Processing...' : isListening ? 'Stop' : 'Start Voice Input'}
         </Button>
 
         <div className="flex-1">
           {isListening && (
             <div className="flex items-center gap-2">
-              <Waves className="w-4 h-4 text-blue-400 wave-animation" />
+              <Waves className="w-4 h-4 text-bg-muted wave-animation" />
               <span className="text-sm text-blue-300">Listening...</span>
             </div>
           )}
@@ -200,7 +199,7 @@ export function VoiceInput({ onTranscriptReady, isActive = true }: VoiceInputPro
       </div>
 
       {!isListening && !transcript && !error && (
-        <div className="mt-3 text-xs text-slate-400">
+        <div className="mt-3 text-xs text-muted-foreground">
           Click "Start Voice Input" and ask questions like "Show me salinity near the equator"
         </div>
       )}

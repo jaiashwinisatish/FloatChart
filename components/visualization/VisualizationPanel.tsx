@@ -115,7 +115,7 @@ export function VisualizationPanel({ specification, data }: VisualizationPanelPr
   const renderVisualization = () => {
     if (!plotData.length) {
       return (
-        <div className="flex-1 flex items-center justify-center text-slate-500">
+        <div className="flex-1 flex items-center justify-center text-muted-foreground">
           <div className="text-center">
             <BarChart3 className="w-12 h-12 mx-auto mb-4 opacity-50" />
             <p>No visualization data available</p>
@@ -140,12 +140,12 @@ export function VisualizationPanel({ specification, data }: VisualizationPanelPr
   };
 
   return (
-    <div className={`h-full flex flex-col bg-slate-900 ${isFullscreen ? 'fixed inset-0 z-50' : ''}`}>
+    <div className={`h-full flex flex-col bg-white ${isFullscreen ? 'fixed inset-0 z-50' : ''}`}>
       {/* Header */}
-      <div className="border-b bg-slate-800 border-slate-700 p-4">
+      <div className="border-b bg-white border-gray-200 p-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <h3 className="text-lg font-semibold text-white">Ocean Data Visualizations</h3>
+            <h3 className="text-lg font-semibold text-foreground">Ocean Data Visualizations</h3>
             <Badge variant="outline" className="text-xs">
               {plotData.length} data points
             </Badge>

@@ -71,8 +71,8 @@ export function AlertsPanel() {
   const getSeverityColor = (severity: string) => {
     switch (severity) {
       case 'critical': return 'bg-red-100 text-red-800 border-red-300';
-      case 'high': return 'bg-orange-100 text-orange-800 border-orange-300';
-      case 'medium': return 'bg-yellow-100 text-yellow-800 border-yellow-300';
+      case 'high': return 'bg-white text-foreground border-border';
+      case 'medium': return 'bg-white text-foreground border-border';
       case 'low': return 'bg-blue-100 text-blue-800 border-blue-300';
       default: return 'bg-gray-100 text-gray-800 border-gray-300';
     }
@@ -81,8 +81,8 @@ export function AlertsPanel() {
   const getSeverityIcon = (severity: string) => {
     switch (severity) {
       case 'critical': return <AlertTriangle className="w-4 h-4 text-red-600" />;
-      case 'high': return <TrendingUp className="w-4 h-4 text-orange-600" />;
-      case 'medium': return <TrendingDown className="w-4 h-4 text-yellow-600" />;
+      case 'high': return <TrendingUp className="w-4 h-4 text-foreground" />;
+      case 'medium': return <TrendingDown className="w-4 h-4 text-foreground" />;
       default: return <Bell className="w-4 h-4 text-blue-600" />;
     }
   };
@@ -115,13 +115,13 @@ export function AlertsPanel() {
   };
 
   return (
-    <div className="h-full bg-slate-900 flex flex-col">
+    <div className="h-full bg-white flex flex-col">
       {/* Header */}
-      <div className="border-b bg-slate-800 border-slate-700 p-4">
+      <div className="border-b bg-white border-gray-200 p-4">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
-            <Bell className="w-5 h-5 text-slate-300" />
-            <h3 className="font-semibold text-white">Ocean Alerts</h3>
+            <Bell className="w-5 h-5 text-muted-foreground" />
+            <h3 className="font-semibold text-foreground">Ocean Alerts</h3>
             <Badge variant="secondary" className="text-xs">
               {filteredAlerts.length} active
             </Badge>
@@ -157,16 +157,16 @@ export function AlertsPanel() {
       <ScrollArea className="flex-1 p-4">
         <div className="space-y-3">
           {filteredAlerts.length === 0 ? (
-            <Card className="p-6 text-center bg-slate-800 border-slate-700">
-              <Bell className="w-8 h-8 text-slate-500 mx-auto mb-3" />
-              <h4 className="text-lg font-medium text-slate-300 mb-2">No Alerts</h4>
-              <p className="text-sm text-slate-400">
+            <Card className="p-6 text-center bg-card border-border">
+              <Bell className="w-8 h-8 text-muted-foreground mx-auto mb-3" />
+              <h4 className="text-lg font-medium text-muted-foreground mb-2">No Alerts</h4>
+              <p className="text-sm text-muted-foreground">
                 {filter === 'all' ? 'All systems are running normally.' : `No ${filter} severity alerts.`}
               </p>
             </Card>
           ) : (
             filteredAlerts.map(alert => (
-              <Card key={alert.id} className={`p-4 bg-slate-800 border-slate-700 ${getSeverityColor(alert.severity)} border-l-4`}>
+              <Card key={alert.id} className={`p-4 bg-card border-border ${getSeverityColor(alert.severity)} border-l-4`}>
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex items-center gap-2">
                     {getSeverityIcon(alert.severity)}
@@ -188,9 +188,9 @@ export function AlertsPanel() {
                 </div>
 
                 <div className="space-y-2">
-                  <p className="text-sm font-medium text-white">{alert.description}</p>
+                  <p className="text-sm font-medium text-foreground">{alert.description}</p>
                   
-                  <div className="flex items-center gap-4 text-xs text-slate-400">
+                  <div className="flex items-center gap-4 text-xs text-muted-foreground">
                     <div className="flex items-center gap-1">
                       <MapPin className="w-3 h-3" />
                       {alert.location.region} ({alert.location.latitude.toFixed(1)}°, {alert.location.longitude.toFixed(1)}°)
@@ -228,8 +228,8 @@ export function AlertsPanel() {
       </ScrollArea>
 
       {/* Footer */}
-      <div className="border-t bg-slate-800 border-slate-700 p-4">
-        <div className="flex items-center justify-between text-xs text-slate-400">
+      <div className="border-t bg-card border-border p-4">
+        <div className="flex items-center justify-between text-xs text-muted-foreground">
           <span>Last updated: {new Date().toLocaleTimeString()}</span>
           <Button variant="ghost" size="sm" className="text-xs">
             <Filter className="w-3 h-3 mr-1" />
