@@ -100,6 +100,57 @@ export function ChatInterface({ messages, onSendMessage, isLoading, sessionId }:
     inputRef.current?.focus();
   };
 
+  const handleVoiceInput = () => {
+    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+      const SpeechRecognition = (window as any).webkitSpeechRecognition || (window as any).SpeechRecognition;
+      const recognition = new SpeechRecognition();
+      
+      recognition.continuous = false;
+      recognition.interimResults = false;
+      recognition.lang = 'en-US';
+      
+      recognition.onstart = () => {
+        console.log('Voice recognition started');
+      };
+      
+      recognition.onresult = (event: any) => {
+        const transcript = event.results[0][0].transcript;
+        setInputValue(transcript);
+      };
+      
+      recognition.onerror = (event: any) => {
+        console.error('Speech recognition error:', event.error);
+        alert('Voice recognition error. Please try again.');
+      };
+      
+      recognition.start();
+    } else {
+      alert('Speech recognition not supported in this browser');
+    }
+  };
+
+  const handleExportChat = () => {
+    const chatData = {
+      messages: messages.map(msg => ({
+        role: msg.role,
+        content: msg.content,
+        timestamp: msg.timestamp,
+        confidence_score: msg.confidence_score
+      })),
+      sessionId,
+      exportDate: new Date().toISOString()
+    };
+    
+    const dataStr = JSON.stringify(chatData, null, 2);
+    const dataBlob = new Blob([dataStr], { type: 'application/json' });
+    const url = URL.createObjectURL(dataBlob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `floatchat-conversation-${new Date().toISOString().split('T')[0]}.json`;
+    link.click();
+    URL.revokeObjectURL(url);
+  };
+
   const formatTimestamp = (date: Date) => {
     return date.toLocaleTimeString('en-US', { 
       hour12: false, 
@@ -115,7 +166,7 @@ export function ChatInterface({ messages, onSendMessage, isLoading, sessionId }:
     return (
       <div
         key={message.id}
-        className={`group flex gap-3 p-4 hover:bg-gray-50/50 transition-colors ${
+        className={`group flex gap-3 p-4 hover:bg-accent/30 transition-all ${
           isUser ? 'justify-end' : 'justify-start'
         } ${isSystem ? 'opacity-75' : ''}`}
       >
@@ -133,10 +184,10 @@ export function ChatInterface({ messages, onSendMessage, isLoading, sessionId }:
         <div className={`max-w-[85%] sm:max-w-[75%] ${isUser ? 'order-first' : ''}`}>
           {/* Message Header */}
           <div className={`flex items-center gap-2 mb-2 ${isUser ? 'justify-end' : 'justify-start'}`}>
-            <span className="text-xs font-medium text-gray-600">
+            <span className="text-xs font-medium text-muted-foreground">
               {isUser ? 'You' : 'FloatChat AI'}
             </span>
-            <span className="text-xs text-gray-400">
+            <span className="text-xs text-muted-foreground/70">
               {formatTimestamp(message.timestamp)}
             </span>
             {message.confidence_score !== undefined && !isUser && (
@@ -148,10 +199,10 @@ export function ChatInterface({ messages, onSendMessage, isLoading, sessionId }:
 
           {/* Message Content */}
           <Card className={`
-            p-4 shadow-sm border transition-all duration-200 hover:shadow-md
+            p-4 shadow-sm border transition-all duration-200 hover:shadow-lg
             ${isUser 
-              ? 'bg-blue-500 text-white border-blue-500 ml-auto rounded-tr-sm' 
-              : 'bg-white text-gray-900 border-gray-200 mr-auto rounded-tl-sm'
+              ? 'bg-primary text-primary-foreground border-primary/50 ml-auto rounded-2xl rounded-tr-sm shadow-primary/20' 
+              : 'bg-card text-card-foreground border-border mr-auto rounded-2xl rounded-tl-sm'
             }
           `}>
             <div className="prose prose-sm max-w-none">
@@ -161,18 +212,18 @@ export function ChatInterface({ messages, onSendMessage, isLoading, sessionId }:
               
               {/* Query Metadata Summary */}
               {message.query_metadata && !isUser && (
-                <div className="mt-3 pt-3 border-t border-gray-200">
+                <div className="mt-3 pt-3 border-t border-border">
                   <div className="flex flex-wrap gap-2 text-xs">
-                    <Badge variant="secondary" className="text-xs bg-blue-50 text-blue-700">
+                    <Badge variant="secondary" className="text-xs bg-primary/10 text-primary">
                       <MapPin className="w-3 h-3 mr-1" />
                       {message.query_metadata.data_points_returned} data points
                     </Badge>
-                    <Badge variant="secondary" className="text-xs bg-green-50 text-green-700">
+                    <Badge variant="secondary" className="text-xs bg-emerald-50 text-emerald-700">
                       <Clock className="w-3 h-3 mr-1" />
                       {message.query_metadata.execution_time}ms
                     </Badge>
                     {message.query_metadata.spatial_bounds && (
-                      <Badge variant="secondary" className="text-xs bg-purple-50 text-purple-700">
+                      <Badge variant="secondary" className="text-xs bg-violet-50 text-violet-700">
                         <Sparkles className="w-3 h-3 mr-1" />
                         Geospatial
                       </Badge>
@@ -263,8 +314,8 @@ export function ChatInterface({ messages, onSendMessage, isLoading, sessionId }:
         <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-6">
           <Waves className="w-10 h-10 text-white" />
         </div>
-        <h2 className="text-2xl font-bold text-gray-900 mb-3">Welcome to FloatChat!</h2>
-        <p className="text-gray-800 mb-6 leading-relaxed">
+        <h2 className="text-2xl font-bold text-foreground mb-3">Welcome to FloatChat!</h2>
+        <p className="text-muted-foreground mb-6 leading-relaxed">
           I'm your AI oceanographer assistant. Ask me anything about ARGO float data, ocean conditions, 
           or marine research. I can help you explore temperature profiles, salinity data, and much more!
         </p>
@@ -277,7 +328,7 @@ export function ChatInterface({ messages, onSendMessage, isLoading, sessionId }:
             <MapPin className="w-4 h-4 mr-3 text-blue-500" />
             <div>
               <div className="font-medium">Explore Ocean Data</div>
-              <div className="text-sm text-gray-700">Temperature profiles in the Arabian Sea</div>
+              <div className="text-sm text-muted-foreground">Temperature profiles in the Arabian Sea</div>
             </div>
           </Button>
           <Button
@@ -288,7 +339,7 @@ export function ChatInterface({ messages, onSendMessage, isLoading, sessionId }:
             <Sparkles className="w-4 h-4 mr-3 text-green-500" />
             <div>
               <div className="font-medium">Seasonal Analysis</div>
-              <div className="text-sm text-gray-700">Salinity variations during monsoon</div>
+              <div className="text-sm text-muted-foreground">Salinity variations during monsoon</div>
             </div>
           </Button>
           <Button
@@ -296,10 +347,10 @@ export function ChatInterface({ messages, onSendMessage, isLoading, sessionId }:
             className="justify-start text-left h-auto p-4"
             onClick={() => handleSuggestionClick("Find unusual temperature readings in the Pacific")}
           >
-            <AlertCircle className="w-4 h-4 mr-3 text-orange-500" />
+            <AlertCircle className="w-4 h-4 mr-3 text-red-500" />
             <div>
               <div className="font-medium">Anomaly Detection</div>
-              <div className="text-sm text-gray-700">Unusual temperature readings</div>
+              <div className="text-sm text-muted-foreground">Unusual temperature readings</div>
             </div>
           </Button>
         </div>
@@ -308,9 +359,9 @@ export function ChatInterface({ messages, onSendMessage, isLoading, sessionId }:
   );
 
   return (
-    <div className="flex flex-col h-full bg-white relative">
+    <div className="flex flex-col h-full bg-background relative">
       {/* Chat Header */}
-      <div className="border-b border-gray-200 p-4 bg-white">
+      <div className="border-b border-border p-4 bg-card/50 backdrop-blur-sm">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Avatar className="w-8 h-8">
@@ -319,8 +370,8 @@ export function ChatInterface({ messages, onSendMessage, isLoading, sessionId }:
               </AvatarFallback>
             </Avatar>
             <div>
-              <h3 className="font-semibold text-gray-900">FloatChat AI</h3>
-              <p className="text-xs text-gray-700">
+              <h3 className="font-semibold text-foreground">FloatChat AI</h3>
+              <p className="text-xs text-muted-foreground">
                 {isLoading ? 'Analyzing data...' : 'Ready to help with ocean data'}
               </p>
             </div>
@@ -348,15 +399,15 @@ export function ChatInterface({ messages, onSendMessage, isLoading, sessionId }:
                   </AvatarFallback>
                 </Avatar>
                 <div className="max-w-[75%]">
-                  <div className="text-xs font-medium text-gray-600 mb-2">FloatChat AI</div>
-                  <Card className="p-4 bg-white border-gray-200 rounded-tl-sm">
+                  <div className="text-xs font-medium text-muted-foreground mb-2">FloatChat AI</div>
+                  <Card className="p-4 bg-card border-border rounded-tl-sm">
                     <div className="flex items-center gap-2">
                       <div className="flex gap-1">
                         <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce"></div>
                         <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
                         <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
                       </div>
-                      <span className="text-sm text-gray-600">Analyzing ocean data...</span>
+                      <span className="text-sm text-muted-foreground">Analyzing ocean data...</span>
                     </div>
                   </Card>
                 </div>
@@ -381,13 +432,13 @@ export function ChatInterface({ messages, onSendMessage, isLoading, sessionId }:
 
       {/* Query Suggestions */}
       {showSuggestions && messages.length > 0 && messages.length <= 2 && (
-        <div className="border-t bg-gray-50 border-gray-200 p-4">
+        <div className="border-t bg-muted/50 backdrop-blur-sm border-border p-4">
           <QuerySuggestions onSuggestionClick={handleSuggestionClick} />
         </div>
       )}
 
       {/* Enhanced Input Form */}
-      <div className="border-t bg-white border-gray-200 p-4">
+      <div className="border-t bg-card/80 backdrop-blur-sm border-border p-4 shadow-lg">
         <form onSubmit={handleSendMessage} className="space-y-3">
           <div className="flex gap-2">
             <div className="flex-1 relative">
@@ -397,7 +448,7 @@ export function ChatInterface({ messages, onSendMessage, isLoading, sessionId }:
                 onChange={(e) => setInputValue(e.target.value)}
                 placeholder="Ask about ocean data..."
                 disabled={isLoading}
-                className="pr-16 sm:pr-24 pl-4 py-3 bg-white border-gray-300 text-black placeholder:text-gray-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 rounded-lg text-base"
+                className="pr-16 sm:pr-24 pl-4 py-3 bg-background border-border text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-1 focus:ring-primary rounded-lg text-base"
               />
               <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1">
                 {inputValue && (
@@ -418,7 +469,8 @@ export function ChatInterface({ messages, onSendMessage, isLoading, sessionId }:
                         type="button"
                         variant="ghost"
                         size="sm"
-                        className="h-7 w-7 p-0 hover:bg-gray-100"
+                        className="h-7 w-7 p-0 hover:bg-muted"
+                        onClick={handleVoiceInput}
                       >
                         <Mic className="w-4 h-4" />
                       </Button>
@@ -431,7 +483,7 @@ export function ChatInterface({ messages, onSendMessage, isLoading, sessionId }:
             <Button 
               type="submit" 
               disabled={!inputValue.trim() || isLoading}
-              className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg transition-colors"
+              className="bg-primary hover:bg-primary/90 text-primary-foreground px-6 py-3 rounded-lg transition-colors"
             >
               {isLoading ? (
                 <Loader2 className="w-4 h-4 animate-spin" />
@@ -443,7 +495,7 @@ export function ChatInterface({ messages, onSendMessage, isLoading, sessionId }:
           
           {/* Quick Actions */}
           <div className="flex items-center gap-2 overflow-x-auto pb-1">
-            <span className="text-xs text-gray-800 whitespace-nowrap">Quick actions:</span>
+            <span className="text-xs text-foreground whitespace-nowrap">Quick actions:</span>
             <Button
               type="button"
               variant="ghost"

@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 :root {
-  /* Ocean-themed color palette */
+  /* Modern Ocean-themed color palette */
   --ocean-deep: #0f172a;
   --ocean-medium: #1e293b;
   --ocean-light: #334155;
@@ -13,60 +13,60 @@
   --accent-blue: #3b82f6;
   --accent-cyan: #06b6d4;
   
-  /* Light mode colors - Pure white theme with maximum contrast */
-  --background: 255 255 255;
-  --foreground: 0 0 0;
+  /* Light mode - Beautiful gradient theme */
+  --background: 248 250 252;
+  --foreground: 15 23 42;
   --card: 255 255 255;
-  --card-foreground: 0 0 0;
+  --card-foreground: 15 23 42;
   --popover: 255 255 255;
-  --popover-foreground: 0 0 0;
+  --popover-foreground: 15 23 42;
   --primary: 59 130 246;
   --primary-foreground: 255 255 255;
-  --secondary: 255 255 255;
-  --secondary-foreground: 0 0 0;
-  --muted: 255 255 255;
-  --muted-foreground: 75 85 99;
-  --accent: 255 255 255;
-  --accent-foreground: 0 0 0;
+  --secondary: 241 245 249;
+  --secondary-foreground: 15 23 42;
+  --muted: 241 245 249;
+  --muted-foreground: 100 116 139;
+  --accent: 240 249 255;
+  --accent-foreground: 3 105 161;
   --destructive: 239 68 68;
   --destructive-foreground: 255 255 255;
-  --border: 209 213 219;
+  --border: 226 232 240;
   --input: 255 255 255;
   --ring: 59 130 246;
   --chart-1: 59 130 246;
   --chart-2: 6 182 212;
-  --chart-3: 34 197 94;
-  --chart-4: 168 85 247;
+  --chart-3: 16 185 129;
+  --chart-4: 139 92 246;
   --chart-5: 249 115 22;
   --radius: 0.75rem;
 }
 
 .dark {
-  /* Professional dark mode - Pure black theme with maximum contrast */
-  --background: 0 0 0;
-  --foreground: 255 255 255;
-  --card: 0 0 0;
-  --card-foreground: 255 255 255;
-  --popover: 0 0 0;
-  --popover-foreground: 255 255 255;
-  --primary: 59 130 246;
-  --primary-foreground: 255 255 255;
-  --secondary: 0 0 0;
-  --secondary-foreground: 255 255 255;
-  --muted: 0 0 0;
-  --muted-foreground: 156 163 175;
-  --accent: 0 0 0;
-  --accent-foreground: 255 255 255;
+  /* Professional dark mode - Rich gradient theme */
+  --background: 15 23 42;
+  --foreground: 248 250 252;
+  --card: 30 41 59;
+  --card-foreground: 248 250 252;
+  --popover: 30 41 59;
+  --popover-foreground: 248 250 252;
+  --primary: 96 165 250;
+  --primary-foreground: 15 23 42;
+  --secondary: 51 65 85;
+  --secondary-foreground: 248 250 252;
+  --muted: 51 65 85;
+  --muted-foreground: 148 163 184;
+  --accent: 30 58 138;
+  --accent-foreground: 191 219 254;
   --destructive: 239 68 68;
   --destructive-foreground: 255 255 255;
-  --border: 55 65 81;
-  --input: 0 0 0;
-  --ring: 59 130 246;
-  --chart-1: 59 130 246;
-  --chart-2: 6 182 212;
-  --chart-3: 34 197 94;
-  --chart-4: 168 85 247;
-  --chart-5: 249 115 22;
+  --border: 71 85 105;
+  --input: 30 41 59;
+  --ring: 96 165 250;
+  --chart-1: 96 165 250;
+  --chart-2: 34 211 238;
+  --chart-3: 52 211 153;
+  --chart-4: 167 139 250;
+  --chart-5: 251 146 60;
 }
 
 @layer base {
@@ -93,21 +93,31 @@
 @layer components {
   /* Theme-aware gradients */
   .ocean-gradient {
-    background: linear-gradient(135deg, hsl(var(--primary)) 0%, #06b6d4 50%, #059669 100%);
+    background: linear-gradient(135deg, #3b82f6 0%, #06b6d4 50%, #10b981 100%);
   }
   
   .dark .ocean-gradient {
-    background: linear-gradient(135deg, #1e40af 0%, #0891b2 50%, #047857 100%);
+    background: linear-gradient(135deg, #60a5fa 0%, #22d3ee 50%, #34d399 100%);
+  }
+  
+  .card-gradient {
+    background: linear-gradient(135deg, hsl(var(--card)) 0%, hsl(var(--accent)) 100%);
   }
   
   .surface-glow {
-    box-shadow: 0 0 20px hsl(var(--primary) / 0.3);
+    box-shadow: 0 0 40px hsl(var(--primary) / 0.15);
   }
   
   .depth-shadow {
     box-shadow: 
-      0 4px 6px -1px hsl(var(--primary) / 0.2),
-      0 2px 4px -1px hsl(var(--primary) / 0.1);
+      0 4px 6px -1px rgba(0, 0, 0, 0.1),
+      0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  }
+  
+  .dark .depth-shadow {
+    box-shadow: 
+      0 4px 6px -1px rgba(0, 0, 0, 0.3),
+      0 2px 4px -1px rgba(0, 0, 0, 0.2);
   }
   
   .glass-effect {
@@ -151,11 +161,11 @@
   
   /* Enhanced interactive elements */
   .interactive-card {
-    @apply bg-card border border-border/50 rounded-lg shadow-sm hover:shadow-md transition-all duration-300 hover:border-border;
+    @apply bg-card border border-border rounded-lg shadow-sm hover:shadow-lg transition-all duration-300 hover:border-primary/50 hover:-translate-y-0.5;
   }
   
   .nav-item {
-    @apply relative overflow-hidden rounded-lg transition-all duration-300 hover:bg-accent/50 hover:scale-105;
+    @apply relative overflow-hidden rounded-lg transition-all duration-300 hover:bg-primary/10 hover:scale-105 hover:text-primary;
   }
   
   .nav-item::before {
@@ -165,12 +175,16 @@
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, hsl(var(--primary) / 0.1), transparent);
+    background: linear-gradient(90deg, transparent, hsl(var(--primary) / 0.2), transparent);
     transition: left 0.5s;
   }
   
   .nav-item:hover::before {
     left: 100%;
+  }
+  
+  .nav-item[data-state="active"] {
+    @apply bg-primary text-primary-foreground shadow-md;
   }
 }
 
@@ -257,6 +271,15 @@
   background-clip: text;
 }
 
+/* Modern gradient backgrounds */
+.gradient-bg {
+  background: linear-gradient(to bottom, hsl(var(--background)), hsl(var(--muted)));
+}
+
+.dark .gradient-bg {
+  background: linear-gradient(to bottom, hsl(var(--background)), hsl(var(--card)));
+}
+
 /* Force theme-aware colors for all components */
 .bg-slate-900 {
   @apply bg-background !important;
@@ -279,11 +302,11 @@
 }
 
 .bg-slate-100 {
-  @apply bg-background !important;
+  @apply bg-muted !important;
 }
 
 .bg-slate-200 {
-  @apply bg-background !important;
+  @apply bg-secondary !important;
 }
 
 .text-white {
@@ -330,30 +353,65 @@
   @apply border-border !important;
 }
 
-/* Force all yellow/amber colors to white in light mode */
+/* Force all yellow/amber colors to theme-aware colors */
 .bg-yellow-50,
 .bg-yellow-100,
 .bg-yellow-200,
+.bg-yellow-300,
+.bg-yellow-400,
+.bg-yellow-500,
 .bg-amber-50,
 .bg-amber-100,
-.bg-amber-200 {
+.bg-amber-200,
+.bg-amber-300,
+.bg-amber-400,
+.bg-amber-500 {
   @apply bg-background !important;
 }
 
+.text-yellow-300,
+.text-yellow-400,
+.text-yellow-500,
 .text-yellow-600,
 .text-yellow-700,
 .text-yellow-800,
+.text-yellow-900,
+.text-amber-300,
+.text-amber-400,
+.text-amber-500,
 .text-amber-600,
 .text-amber-700,
-.text-amber-800 {
+.text-amber-800,
+.text-amber-900 {
   @apply text-foreground !important;
 }
 
+.border-yellow-200,
 .border-yellow-300,
 .border-yellow-400,
+.border-yellow-500,
+.border-amber-200,
 .border-amber-300,
-.border-amber-400 {
+.border-amber-400,
+.border-amber-500 {
   @apply border-border !important;
+}
+
+/* Ensure proper dark theme support */
+.dark .bg-background {
+  background-color: rgb(0 0 0) !important;
+}
+
+.dark .text-foreground {
+  color: rgb(255 255 255) !important;
+}
+
+.dark .bg-card {
+  background-color: rgb(0 0 0) !important;
+}
+
+.dark .text-card-foreground {
+  color: rgb(255 255 255) !important;
 }
 
 /* Force orange colors to white in light mode */
@@ -405,6 +463,28 @@
 .border-blue-100,
 .border-green-100 {
   @apply border-border !important;
+}
+
+/* Force all light text colors to be dark in light mode */
+:root {
+  --muted-foreground-override: 55 65 81; /* gray-700 */
+}
+
+.text-muted-foreground {
+  color: rgb(var(--muted-foreground-override)) !important;
+}
+
+/* Ensure all text is visible in light mode */
+body:not(.dark) .text-gray-400,
+body:not(.dark) .text-gray-500,
+body:not(.dark) .text-slate-400,
+body:not(.dark) .text-slate-500 {
+  color: rgb(55 65 81) !important; /* gray-700 */
+}
+
+/* Make sure all foreground text is black in light mode */
+body:not(.dark) .text-foreground {
+  color: rgb(0 0 0) !important;
 }
 
 /* Shimmer loading effect */

@@ -41,26 +41,25 @@ export function ExplainableAISidebar({ queryMetadata, visualization, onClose }: 
 
   const copyToClipboard = async (text: string) => {
     try {
-      await navigator.clipboard.writeText(text);
     } catch (error) {
       console.error('Failed to copy to clipboard:', error);
     }
   };
 
   return (
-    <div className="h-full bg-slate-900 border-l border-slate-700 flex flex-col">
+    <div className="h-full bg-background border-l border-border flex flex-col">
       {/* Header */}
-      <div className="border-b bg-slate-800 border-slate-700 p-4">
+      <div className="border-b bg-card/50 backdrop-blur-sm border-border p-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Brain className="w-5 h-5 text-purple-400" />
-            <h3 className="font-semibold text-white">Explainable AI</h3>
+            <Brain className="w-5 h-5 text-primary" />
+            <h3 className="font-semibold text-foreground">Explainable AI</h3>
           </div>
           <Button variant="ghost" size="sm" onClick={onClose}>
             <X className="w-4 h-4" />
           </Button>
         </div>
-        <p className="text-sm text-slate-300 mt-1">
+        <p className="text-sm text-muted-foreground mt-1">
           Understanding how AI generated this response
         </p>
       </div>
@@ -80,8 +79,8 @@ export function ExplainableAISidebar({ queryMetadata, visualization, onClose }: 
                   ) : (
                     <ChevronRight className="w-4 h-4" />
                   )}
-                  <FileText className="w-4 h-4 text-slate-300" />
-                  <span className="font-medium text-white">Query Overview</span>
+                  <FileText className="w-4 h-4 text-muted-foreground" />
+                  <span className="font-medium text-foreground">Query Overview</span>
                 </div>
               </Button>
             </CollapsibleTrigger>
@@ -90,12 +89,12 @@ export function ExplainableAISidebar({ queryMetadata, visualization, onClose }: 
                 {queryMetadata ? (
                   <div className="space-y-2 text-sm">
                     <div>
-                      <span className="font-medium text-white">Original Query:</span>
-                      <p className="text-slate-300 mt-1 italic">"{queryMetadata.original_query}"</p>
+                      <span className="font-medium text-foreground">Original Query:</span>
+                      <p className="text-muted-foreground mt-1 italic">"{queryMetadata.original_query}"</p>
                     </div>
                     <div>
-                      <span className="font-medium text-white">Processed Query:</span>
-                      <p className="text-slate-300 mt-1">"{queryMetadata.processed_query}"</p>
+                      <span className="font-medium text-foreground">Processed Query:</span>
+                      <p className="text-muted-foreground mt-1">"{queryMetadata.processed_query}"</p>
                     </div>
                     <div className="flex gap-2 mt-3">
                       <Badge variant="outline" className="text-xs">

@@ -102,15 +102,15 @@ export function ContextPanel({ messages, onUpdateContext }: ContextPanelProps) {
   };
 
   return (
-    <div className="h-full bg-background flex flex-col">
-      <div className="border-b bg-card border-border p-4">
+    <div className="h-full bg-background border-t border-border">
+      <div className="p-4 border-b border-border bg-card/50 backdrop-blur-sm">
         <div className="flex items-center justify-between">
           <h3 className="font-semibold text-foreground">Query Context</h3>
           <Button variant="outline" size="sm" onClick={clearContext}>
             Clear
           </Button>
         </div>
-        <p className="text-sm text-gray-700 mt-1">
+        <p className="text-sm text-muted-foreground mt-1">
           Active filters and preferences from your conversation
         </p>
       </div>
@@ -120,13 +120,13 @@ export function ContextPanel({ messages, onUpdateContext }: ContextPanelProps) {
           {/* Recent Query Summary */}
           <Card className="p-3 bg-card border-border">
             <div className="flex items-center gap-2 mb-2">
-              <Clock className="w-4 h-4 text-muted-foreground" />
-              <span className="font-medium text-sm text-foreground">Recent Activity</span>
+              <Clock className="w-4 h-4 text-gray-600" />
+              <span className="font-medium text-sm text-black">Recent Activity</span>
             </div>
-            <div className="text-xs text-muted-foreground">
+            <div className="text-xs text-gray-700">
               {messages.filter(m => m.role === 'user').length} queries in this session
             </div>
-            <div className="text-xs text-muted-foreground mt-1">
+            <div className="text-xs text-gray-700 mt-1">
               Last query: {messages.filter(m => m.role === 'user').slice(-1)[0]?.timestamp.toLocaleTimeString()}
             </div>
           </Card>

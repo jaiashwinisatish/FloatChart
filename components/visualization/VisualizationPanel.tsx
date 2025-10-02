@@ -9,8 +9,8 @@ import { ChartBar as BarChart3, ChartLine as LineChart, ChartScatter as ScatterC
 import { VisualizationSpec, ChatMessage } from '@/types';
 import { ProfilePlot } from './ProfilePlot';
 import { TimeSeriesPlot } from './TimeSeriesPlot';
-import { ScatterPlot } from './ScatterPlot';
-import { HeatmapPlot } from './HeatmapPlot';
+import { ScatterPlot } from './ScatterPlotWorking';
+import { HeatmapPlot } from './HeatmapPlotNew';
 
 interface VisualizationPanelProps {
   specification: VisualizationSpec | null;
@@ -44,6 +44,54 @@ export function VisualizationPanel({ specification, data }: VisualizationPanelPr
       default:
         setPlotData([]);
     }
+  };
+
+  const handleExport = () => {
+    const exportData = {
+      type: activeVisualization,
+      data: plotData,
+      timestamp: new Date().toISOString(),
+      metadata: {
+        dataPoints: plotData.length,
+        parameters: Object.keys(plotData[0] || {}),
+        generatedBy: 'FloatChat'
+      }
+    };
+    
+    const dataStr = JSON.stringify(exportData, null, 2);
+    const dataBlob = new Blob([dataStr], { type: 'application/json' });
+    const url = URL.createObjectURL(dataBlob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `floatchat-${activeVisualization}-${new Date().toISOString().split('T')[0]}.json`;
+    link.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const handleShare = () => {
+    const shareText = `Check out this ${activeVisualization} visualization from FloatChat! 
+Data points: ${plotData.length}
+Generated: ${new Date().toLocaleDateString()}`;
+    
+    if (navigator.share) {
+      navigator.share({
+        title: `FloatChat ${activeVisualization} Visualization`,
+        text: shareText,
+        url: window.location.href
+      });
+    } else {
+      navigator.clipboard.writeText(shareText + '\n' + window.location.href);
+      alert('Share link copied to clipboard!');
+    }
+  };
+
+  const handleCustomize = () => {
+    alert(`Customize ${activeVisualization} options:
+- Color schemes
+- Data filtering
+- Axis ranges
+- Display parameters
+- Export formats`);
   };
 
   const generateProfileData = () => {
@@ -140,27 +188,27 @@ export function VisualizationPanel({ specification, data }: VisualizationPanelPr
   };
 
   return (
-    <div className={`h-full flex flex-col bg-white ${isFullscreen ? 'fixed inset-0 z-50' : ''}`}>
+    <div className="h-full bg-background flex flex-col">
       {/* Header */}
-      <div className="border-b bg-white border-gray-200 p-4">
+      <div className="border-b border-border p-4 bg-card/50 backdrop-blur-sm">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <h3 className="text-lg font-semibold text-foreground">Ocean Data Visualizations</h3>
-            <Badge variant="outline" className="text-xs">
-              {plotData.length} data points
-            </Badge>
+            <h3 className="font-semibold text-foreground">Data Visualizations</h3>
           </div>
           
           <div className="flex items-center gap-2">
-            <Button size="sm" variant="outline">
+            <Badge variant="outline" className="text-xs">
+              {plotData.length} data points
+            </Badge>
+            <Button size="sm" variant="outline" onClick={handleCustomize}>
               <Settings className="w-4 h-4 mr-2" />
               Customize
             </Button>
-            <Button size="sm" variant="outline">
+            <Button size="sm" variant="outline" onClick={handleExport}>
               <Download className="w-4 h-4 mr-2" />
               Export
             </Button>
-            <Button size="sm" variant="outline">
+            <Button size="sm" variant="outline" onClick={handleShare}>
               <Share className="w-4 h-4 mr-2" />
               Share
             </Button>
@@ -177,7 +225,7 @@ export function VisualizationPanel({ specification, data }: VisualizationPanelPr
             </Button>
           </div>
         </div>
-
+        
         {/* Visualization Types */}
         <Tabs value={activeVisualization} onValueChange={setActiveVisualization} className="mt-4">
           <TabsList className="grid grid-cols-4 w-full max-w-md">

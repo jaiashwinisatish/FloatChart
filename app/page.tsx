@@ -116,7 +116,7 @@ What would you like to discover today?`,
   };
 
   return (
-    <div className="h-screen flex flex-col bg-white">
+    <div className="h-screen flex flex-col bg-background">
       <SystemHeader 
         onToggleExplainableAI={() => setShowExplainableAI(!showExplainableAI)}
         onToggleVoice={() => setIsVoiceMode(!isVoiceMode)}
@@ -129,8 +129,8 @@ What would you like to discover today?`,
           {/* Main Content Area */}
           <ResizablePanel defaultSize={showExplainableAI ? 70 : 100} minSize={50}>
             <Tabs value={activeTab} onValueChange={setActiveTab} className="h-full flex flex-col">
-              <div className="border-b bg-white px-4 py-2 border-gray-200">
-                <TabsList className="grid grid-cols-5 w-full max-w-md bg-white">
+              <div className="border-b bg-card/50 backdrop-blur-sm px-4 py-3 border-border shadow-sm">
+                <TabsList className="grid grid-cols-5 w-full max-w-md bg-muted/50 p-1">
                   <TabsTrigger value="chat" className="nav-item flex items-center gap-2">
                     <MessageSquare className="w-4 h-4" />
                     Chat

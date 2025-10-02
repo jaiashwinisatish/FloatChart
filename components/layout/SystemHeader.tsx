@@ -48,15 +48,15 @@ export function SystemHeader({
 
   const getHealthStatusColor = (status: string) => {
     switch (status) {
-      case 'healthy': return 'bg-emerald-500';
-      case 'degraded': return 'bg-white border border-gray-300';
-      case 'down': return 'bg-red-500';
-      default: return 'bg-gray-500';
+      case 'healthy': return 'bg-emerald-500 shadow-sm shadow-emerald-500/50';
+      case 'degraded': return 'bg-amber-500 shadow-sm shadow-amber-500/50';
+      case 'down': return 'bg-red-500 shadow-sm shadow-red-500/50';
+      default: return 'bg-muted-foreground';
     }
   };
 
   return (
-    <header className="bg-white border-b border-gray-200 px-6 py-3 shadow-sm">
+    <header className="bg-card/80 backdrop-blur-md border-b border-border px-6 py-3 shadow-sm">
       <div className="flex items-center justify-between">
         {/* Logo and Title */}
         <div className="flex items-center space-x-4">
@@ -65,8 +65,8 @@ export function SystemHeader({
               <Waves className="w-6 h-6 text-white wave-animation" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-black">FloatChat</h1>
-              <p className="text-xs text-gray-600">AI Ocean Data Discovery • {actualTheme} mode • Theme Working!</p>
+              <h1 className="text-xl font-bold bg-gradient-to-r from-primary to-cyan-500 bg-clip-text text-transparent">FloatChat</h1>
+              <p className="text-xs text-muted-foreground">AI Ocean Data Discovery</p>
             </div>
           </div>
           
@@ -74,7 +74,7 @@ export function SystemHeader({
           {systemHealth && (
             <div className="flex items-center space-x-2">
               <div className={`w-2 h-2 rounded-full ${getHealthStatusColor(systemHealth.status)}`} />
-              <span className="text-sm text-gray-700">
+              <span className="text-sm text-foreground font-medium">
                 {systemHealth.metrics.active_users} users active
               </span>
             </div>
@@ -82,7 +82,7 @@ export function SystemHeader({
         </div>
 
         {/* Current Time and Data Status */}
-        <div className="hidden md:flex items-center space-x-4 text-sm text-gray-700">
+        <div className="hidden md:flex items-center space-x-4 text-sm text-foreground">
           <div className="flex items-center space-x-2">
             <Activity className="w-4 h-4" />
             <span>UTC {currentTime.toISOString().slice(0, 19).replace('T', ' ')}</span>
@@ -101,7 +101,7 @@ export function SystemHeader({
             variant={isVoiceMode ? "default" : "outline"}
             size="sm"
             onClick={onToggleVoice}
-            className={isVoiceMode ? "bg-red-600 hover:bg-red-700 text-white" : ""}
+            className={isVoiceMode ? "bg-red-600 hover:bg-red-700 text-white shadow-md shadow-red-500/30" : ""}
           >
             {isVoiceMode ? (
               <>

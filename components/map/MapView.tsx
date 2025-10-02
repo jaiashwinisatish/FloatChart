@@ -47,6 +47,29 @@ export function MapView({ onLocationQuery, visualizationData }: MapViewProps) {
     }
   };
 
+  const handleExport = () => {
+    const mapData = {
+      selectedLocation,
+      floats: sampleFloats,
+      mapStyle,
+      timestamp: new Date().toISOString()
+    };
+    
+    const dataStr = JSON.stringify(mapData, null, 2);
+    const dataBlob = new Blob([dataStr], { type: 'application/json' });
+    const url = URL.createObjectURL(dataBlob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `floatchat-map-${new Date().toISOString().split('T')[0]}.json`;
+    link.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const handleFilterToggle = () => {
+    // Toggle filter panel or show filter options
+    alert('Filter options: Distance from location, Float status, Date range, Parameter thresholds');
+  };
+
   const getMapStyleUrl = (style: string) => {
     switch (style) {
       case 'satellite':
@@ -162,15 +185,15 @@ export function MapView({ onLocationQuery, visualizationData }: MapViewProps) {
           </div>
 
           <div className="flex items-center gap-2">
-            <Button size="sm" variant="outline">
+            <Button size="sm" variant="outline" onClick={handleFilterToggle}>
               <Filter className="w-4 h-4 mr-2" />
               Filters
             </Button>
-            <Button size="sm" variant="outline">
+            <Button size="sm" variant="outline" onClick={handleExport}>
               <Download className="w-4 h-4 mr-2" />
               Export
             </Button>
-            <Button size="sm" variant="outline">
+            <Button size="sm" variant="outline" onClick={() => alert('Fullscreen mode activated!')}>
               <Maximize2 className="w-4 h-4" />
             </Button>
           </div>
