@@ -42,6 +42,7 @@ FloatChat/
 ```
 
 ## 🚀 Quick Start
+to use 
 
 1. **Clone and setup**:
    ```bash
