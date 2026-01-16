@@ -87,4 +87,4 @@ Please read our contributing guidelines and code of conduct before submitting pu
 
 ## 📄 License
 
-MIT License - see LICENSE file for details.
+MIT License - see LICENSE file for details and so on
