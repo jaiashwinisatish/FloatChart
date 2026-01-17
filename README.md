@@ -81,4 +81,17 @@ to use
 - "Find unusual salinity readings near major currents"
 - "Export recent float data as NetCDF for station 2903334"
 
+## 📊 Sample Queries
 
+- "Show me temperature profiles in the Arabian Sea for the last 6 months"
+- "Compare BGC parameters between different ocean basins"
+- "Find unusual salinity readings near major currents"
+- "Export recent float data as NetCDF for station 2903334"
+
+## 🤝 Contributing
+
+Please read our contributing guidelines and code of conduct before submitting pull requests.
+
+## 📄 License
+
+MIT License - see LICENSE file for details and so on
