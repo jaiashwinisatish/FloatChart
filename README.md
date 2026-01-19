@@ -2,7 +2,7 @@
 
 An intelligent conversational interface for querying and visualizing ARGO oceanographic datasets using natural language processing and RAG (Retrieval-Augmented Generation) technology.
 
-## 🌊 Features
+## 🌊 
 
 ### Core Capabilities
 - **Natural Language Queries**: Ask questions like "Show me salinity profiles near the equator in March 2023"
