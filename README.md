@@ -1,6 +1,6 @@
 # FloatChat - AI-Powered Ocean Data Discovery System
 
-
+An intelligent conversational interface for querying and visualizing ARGO oceanographic datasets using natural language processing and RAG (Retrieval-Augmented Generation) technology.
 
 ## 🌊 Features
 
